@@ -19,24 +19,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.text.format.Formatter.formatFileSize;
+
 public class NetworkUsageActivity extends Activity {
 
     private static final String TAG = "liuyixi0103";
+    private HashMap<Integer, Long> dataCostMap;
+    private NetworkStatsManager networkStatsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        networkStatsManager = (NetworkStatsManager) getSystemService(Context.NETWORK_STATS_SERVICE);
+
         setContentView(R.layout.activity_network_usage);
         TextView showDataUssageStatsTitle = findViewById(R.id.data_usage_stats_title);
         showDataUssageStatsTitle.setVisibility(View.VISIBLE);
 
-        NetworkStatsManager networkStatsManager = (NetworkStatsManager) getSystemService(Context.NETWORK_STATS_SERVICE);
         //获取总流量
         computeTotalUsageDataForDevice(networkStatsManager,getDurationTime());
         //获取应用流量
-        HashMap<Integer, Long> dcMap = computeDataUsageforAllUids(networkStatsManager, getDurationTime());
+        dataCostMap = computeDataUsageforAllUids(networkStatsManager, getDurationTime());
         //获取应用的uid
         getApplicationUids();
+
+        //获取一个应用的uid
     }
 
     @TargetApi(Build.VERSION_CODES.O)
@@ -59,7 +66,7 @@ public class NetworkUsageActivity extends Activity {
         }catch (Exception e){
             e.printStackTrace();
         }
-        String total = String.format(getResources().getString(R.string.data_usage_total_summay_text), Formatter.formatFileSize(getApplicationContext(),result));
+        String total = String.format(getResources().getString(R.string.data_usage_total_summay_text), formatFileSize(getApplicationContext(),result));
         TextView showTotalDataUsage = ((TextView)findViewById(R.id.data_usage_total_summay));
         showTotalDataUsage.setText(total);
         showTotalDataUsage.setVisibility(View.VISIBLE);
@@ -76,6 +83,23 @@ public class NetworkUsageActivity extends Activity {
             int uid = applications.get(i).uid;
             uids.put(uid, applications.get(i));
             Log.d(TAG,"processName = " + applications.get(i).processName + "  / uid = " + uid);
+        }
+
+        //获取一个应用的data usage
+        computeDataUsageforOneUid(10036);
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    //根据UID 查询网络使用情况
+    private void computeDataUsageforOneUid(Integer uid) {
+        Log.d(TAG,"进入查找一个应用使用流量统计方法");
+        for (Integer key : dataCostMap.keySet()) {
+            if(key.equals(uid)){
+                Log.d(TAG, "查找一个：buckt-map(" + key + ") = " + dataCostMap.get(key));
+                Log.d(TAG,"查找小米Tv播放器 uid = " + uid);
+                TextView showTotalDataUsage = (findViewById(R.id.showOneAppDataUsage));
+                showTotalDataUsage.setText(Formatter.formatFileSize(getApplicationContext(),dataCostMap.get(key)));
+            }
         }
     }
 

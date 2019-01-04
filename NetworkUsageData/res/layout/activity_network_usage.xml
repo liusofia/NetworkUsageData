@@ -33,6 +33,24 @@
             android:visibility="invisible"
             tools:text="@string/data_usage_total_summay_text"
             tools:visibility="visible"/>
+        <!-- 以下是临时展示一个应用的流量使用情况-->
+        <TextView
+            android:id="@+id/showOneAppName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="小米Tv播放器使用数据流量: "
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/data_usage_total_summay"
+            android:textColor="@color/white_70"
+            android:textSize="15sp" />
+        <TextView
+            android:id="@+id/showOneAppDataUsage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/showOneAppName"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
         <!-- 数据仅供参考-->
     </RelativeLayout>
     <FrameLayout
