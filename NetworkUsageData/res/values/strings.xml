@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NetworkUsageData</string>
+    <string name="data_usage_stats_title_text">"Data usage stats"</string>
+    <string name="data_usage_total_summay_text">This month: %1$s</string>
+</resources>
