@@ -1,6 +1,7 @@
 package data.usge.network.wifi.com.networkusagedata;
 
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Formatter;
 import android.view.LayoutInflater;
@@ -11,12 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NetworkUsageAdapter extends RecyclerView.Adapter<NetworkUsageViewHolder> {
-
-
     private static Drawable youTobeDrawable = null;
     private static String youTubePkgName = "com.xm.webcontent";
 
-    private List<DataConsumptionItem> itemList = new ArrayList<DataConsumptionItem>();
+    private List<NetworkDataAppItem> itemList = new ArrayList<NetworkDataAppItem>();
     private Context context;
 
     public NetworkUsageAdapter(Context context) {
@@ -33,10 +32,10 @@ public class NetworkUsageAdapter extends RecyclerView.Adapter<NetworkUsageViewHo
         if ((itemList == null) || (itemList.size() <= 0)) {
             return;
         }
-        DataConsumptionItem item = itemList.get(position);
+        NetworkDataAppItem item = itemList.get(position);
         if (item.pkgName.equals(youTubePkgName)) {
             if (youTobeDrawable == null) {
-//                youTobeDrawable = ContextCompat.getDrawable(context, R.drawable.dc_appicon_yt);
+                youTobeDrawable = ContextCompat.getDrawable(context, R.drawable.dc_appicon_yt);
             }
             holder.icon.setImageDrawable(youTobeDrawable);
         } else {
@@ -64,7 +63,7 @@ public class NetworkUsageAdapter extends RecyclerView.Adapter<NetworkUsageViewHo
         }
     }
 
-    public void setList(List<DataConsumptionItem> list) {
+    public void setList(List<NetworkDataAppItem> list) {
         itemList = list;
     }
 }
