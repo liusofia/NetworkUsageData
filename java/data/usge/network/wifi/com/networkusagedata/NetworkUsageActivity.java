@@ -9,6 +9,8 @@ import android.content.pm.ApplicationInfo;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.View;
@@ -23,27 +25,40 @@ import static android.text.format.Formatter.formatFileSize;
 
 public class NetworkUsageActivity extends Activity {
 
-    private static final String TAG = "liuyixi0103";
-    private HashMap<Integer, Long> dataCostMap;
-    private NetworkStatsManager networkStatsManager;
+    private static final String TAG = "liuyixi0107";
+    private HashMap<Integer, Long> mDataCostMapForAllUids;
+    private NetworkStatsManager mNetworkStatsManager;
+
+    private RecyclerView list;
+    private NetworkUsageAdapter adapter;
+
+//    private RetrieveDataAsyncTask retrieveDataTask = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        networkStatsManager = (NetworkStatsManager) getSystemService(Context.NETWORK_STATS_SERVICE);
+        mNetworkStatsManager = (NetworkStatsManager) getSystemService(Context.NETWORK_STATS_SERVICE);
 
         setContentView(R.layout.activity_network_usage);
         TextView showDataUssageStatsTitle = findViewById(R.id.data_usage_stats_title);
         showDataUssageStatsTitle.setVisibility(View.VISIBLE);
+        ///////////////////////////////////////////////////////////////////////////////////////
+        //专门用于盛放app信息的list
+        list = findViewById(R.id.dataUsageList);
+        //用于显示各个应用的list
+        list.setVerticalScrollBarEnabled(false);
+        list.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
 
+        adapter = new NetworkUsageAdapter(this);
+        list.setAdapter(adapter);
+        ///////////////////////////////////////////////////////////////////////////////////////
         //获取总流量
-        computeTotalUsageDataForDevice(networkStatsManager,getDurationTime());
+        computeTotalUsageDataForDevice(mNetworkStatsManager,getDurationTime());
         //获取应用流量
-        dataCostMap = computeDataUsageforAllUids(networkStatsManager, getDurationTime());
-        //获取应用的uid
-        getApplicationUids();
+        mDataCostMapForAllUids = computeDataUsageforAllUids(mNetworkStatsManager, getDurationTime());
 
         //获取一个应用的uid
+//        getApplicationUids();
     }
 
     @TargetApi(Build.VERSION_CODES.O)
@@ -70,37 +85,7 @@ public class NetworkUsageActivity extends Activity {
         TextView showTotalDataUsage = ((TextView)findViewById(R.id.data_usage_total_summay));
         showTotalDataUsage.setText(total);
         showTotalDataUsage.setVisibility(View.VISIBLE);
-        Log.d(TAG, "Total: " + total);
-    }
-
-    //获取application 的 packageName/processName
-    public void getApplicationUids(){
-        //内核分配给application 的内核用户标识
-        Map<Integer, ApplicationInfo> uids = new HashMap<Integer, ApplicationInfo>();
-        //获取设备上安装应用的列表
-        List<ApplicationInfo> applications = getPackageManager().getInstalledApplications(0);
-        for (int i = 0; i < applications.size(); i++) {
-            int uid = applications.get(i).uid;
-            uids.put(uid, applications.get(i));
-            Log.d(TAG,"processName = " + applications.get(i).processName + "  / uid = " + uid);
-        }
-
-        //获取一个应用的data usage
-        computeDataUsageforOneUid(10036);
-    }
-
-    @TargetApi(Build.VERSION_CODES.O)
-    //根据UID 查询网络使用情况
-    private void computeDataUsageforOneUid(Integer uid) {
-        Log.d(TAG,"进入查找一个应用使用流量统计方法");
-        for (Integer key : dataCostMap.keySet()) {
-            if(key.equals(uid)){
-                Log.d(TAG, "查找一个：buckt-map(" + key + ") = " + dataCostMap.get(key));
-                Log.d(TAG,"查找小米Tv播放器 uid = " + uid);
-                TextView showTotalDataUsage = (findViewById(R.id.showOneAppDataUsage));
-                showTotalDataUsage.setText(Formatter.formatFileSize(getApplicationContext(),dataCostMap.get(key)));
-            }
-        }
+        Log.d(TAG, "Total Usage Data For Device : " + total);
     }
 
     @TargetApi(Build.VERSION_CODES.O)
@@ -149,6 +134,37 @@ public class NetworkUsageActivity extends Activity {
         return map;
     }
 
+///************************************************************************************************************////
+    //获取application 的 packageName/processName
+//    public void getApplicationUids(){
+//        //内核分配给application 的内核用户标识
+//        Map<Integer, ApplicationInfo> uids = new HashMap<Integer, ApplicationInfo>();
+//        //获取设备上安装应用的列表
+//        List<ApplicationInfo> applications = getPackageManager().getInstalledApplications(0);
+//        for (int i = 0; i < applications.size(); i++) {
+//            int uid = applications.get(i).uid;
+//            uids.put(uid, applications.get(i));
+//            Log.d(TAG,"processName = " + applications.get(i).processName + "  / uid = " + uid);
+//        }
+//
+//        //获取一个应用的data usage
+//        computeDataUsageforOneUid(10036);
+//    }
+
+//
+//    @TargetApi(Build.VERSION_CODES.O)
+//    //根据UID 查询网络使用情况
+//    private void computeDataUsageforOneUid(Integer uid) {
+//        Log.d(TAG,"进入查找一个应用使用流量统计方法");
+//        for (Integer key : mDataCostMapForAllUids.keySet()) {
+//            if(key.equals(uid)){
+//                Log.d(TAG, "查找一个：buckt-map(" + key + ") = " + mDataCostMapForAllUids.get(key));
+//                Log.d(TAG,"查找小米Tv播放器 uid = " + uid);
+//                TextView showTotalDataUsage = (findViewById(R.id.showOneAppDataUsage));
+//                showTotalDataUsage.setText(Formatter.formatFileSize(getApplicationContext(), mDataCostMapForAllUids.get(key)));
+//            }
+//        }
+//    }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //用于获取起始时间
     public Duration getDurationTime(){

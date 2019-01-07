@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NetworkUsageActivity">
+    <!-- 主UI -->
+    <RelativeLayout
+        android:id="@+id/main_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:background="@android:color/darker_gray">
+        <TextView
+            android:id="@+id/data_usage_stats_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:text="@string/data_usage_stats_title_text"
+            android:textColor="@color/white"
+            android:textSize="21sp"/>
+        <!--tools 什么意思-->
+        <TextView
+            android:id="@+id/data_usage_total_summay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/data_usage_stats_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="6dp"
+            android:text="@color/white_70"
+            android:textSize="15sp"
+            android:visibility="invisible"
+            tools:text="@string/data_usage_total_summay_text"
+            tools:visibility="visible"/>
+        <!-- 数据仅供参考-->
+    </RelativeLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/main_title_layout"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp">
+        <!-- 这里有一个list容器 一个load 一个error-->
+        <!-- android:clipChildren="false" 用于限制是否可以超出父的布局-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/dataUsageList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:overScrollMode="never"
+            android:scrollbars="none"/>
+        <!-- 用于load - 开始-->
+        <RelativeLayout
+            android:id="@+id/processingRelayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="@android:color/transparent"
+            tools:ignore = "ExtraText"
+            tools:visibility="visible">
+
+            <ProgressBar
+                style="@android:style/Widget.ProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="52dp"
+                android:focusable="false"
+                android:indeterminateDrawable="@drawable/progressbar_rotate" />
+        </RelativeLayout>
+        <!-- 用于load - 结束 -->
+        <!-- 用于进行错误提示 - 开始-->
+        <RelativeLayout
+            android:id="@+id/errorReLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="@android:color/transparent"
+            tools:ignore = "ExtraText"
+            tools:visibility="visible">
+            <TextView
+                android:id="@+id/errorTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="52dp"
+                android:text="@string/network_data_consumption_nodata"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </RelativeLayout>
+        <!-- 用于进行错误提示 - 结束 -->
+    </FrameLayout>
+</RelativeLayout>
