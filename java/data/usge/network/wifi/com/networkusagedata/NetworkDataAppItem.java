@@ -4,6 +4,9 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 
+/**
+ * 用于每一项
+ */
 public class NetworkDataAppItem implements Comparable<NetworkDataAppItem> {
 
     public long position = 0;

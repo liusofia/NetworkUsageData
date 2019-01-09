@@ -3,6 +3,7 @@
     <string name="data_usage_stats_title_text">"Data usage stats"</string>
     <string name="data_usage_total_summay_text">整个设备的汇总数据使用情况 - This month: %1$s</string>
     <string name="network_data_consumption_nodata">没有统计信息</string>
+    <string name="network_data_consumption_apps_system">系统应用</string>
 
     <string name="f_dc_system" translatable="false">System</string>
     <string name="f_dc_xmb" translatable="false">10.9MB</string>

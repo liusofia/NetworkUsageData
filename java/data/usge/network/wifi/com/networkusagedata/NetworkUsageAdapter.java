@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NetworkUsageAdapter extends RecyclerView.Adapter<NetworkUsageViewHolder> {
-    private static Drawable youTobeDrawable = null;
+    private static Drawable YouTubeDrawable = null;
     private static String youTubePkgName = "com.xm.webcontent";
 
     private List<NetworkDataAppItem> itemList = new ArrayList<NetworkDataAppItem>();
@@ -20,6 +20,11 @@ public class NetworkUsageAdapter extends RecyclerView.Adapter<NetworkUsageViewHo
 
     public NetworkUsageAdapter(Context context) {
         this.context = context;
+    }
+
+    @Override
+    public NetworkUsageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new NetworkUsageViewHolder(LayoutInflater.from(context).inflate(R.layout.network_usage_item_layout, parent, false));
     }
 
     @Override
@@ -34,10 +39,10 @@ public class NetworkUsageAdapter extends RecyclerView.Adapter<NetworkUsageViewHo
         }
         NetworkDataAppItem item = itemList.get(position);
         if (item.pkgName.equals(youTubePkgName)) {
-            if (youTobeDrawable == null) {
-                youTobeDrawable = ContextCompat.getDrawable(context, R.drawable.dc_appicon_yt);
+            if (YouTubeDrawable == null) {
+                YouTubeDrawable = ContextCompat.getDrawable(context, R.drawable.dc_appicon_yt);
             }
-            holder.icon.setImageDrawable(youTobeDrawable);
+            holder.icon.setImageDrawable(YouTubeDrawable);
         } else {
             holder.icon.setImageDrawable(item.getAppIcon(context));
         }
@@ -50,11 +55,6 @@ public class NetworkUsageAdapter extends RecyclerView.Adapter<NetworkUsageViewHo
     @Override
     public int getItemCount() {
         return itemList == null ? 0 : itemList.size();
-    }
-
-    @Override
-    public NetworkUsageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new NetworkUsageViewHolder(LayoutInflater.from(context).inflate(R.layout.network_usage_item_layout, parent, false));
     }
 
     public void clean() {

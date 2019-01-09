@@ -18,7 +18,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
             android:text="@string/data_usage_stats_title_text"
-            android:textColor="@color/white"
+            android:textColor="@color/white_10"
             android:textSize="21sp"/>
         <!--tools 什么意思-->
         <TextView
@@ -28,7 +28,7 @@
             android:layout_below="@id/data_usage_stats_title"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="6dp"
-            android:text="@color/white_70"
+            android:text="@color/white_10"
             android:textSize="15sp"
             android:visibility="invisible"
             tools:text="@string/data_usage_total_summay_text"
@@ -40,7 +40,8 @@
         android:layout_height="match_parent"
         android:layout_below="@id/main_title_layout"
         android:layout_marginLeft="100dp"
-        android:layout_marginRight="100dp">
+        android:layout_marginRight="100dp"
+        android:background="@color/gray">
         <!-- 这里有一个list容器 一个load 一个error-->
         <!-- android:clipChildren="false" 用于限制是否可以超出父的布局-->
         <android.support.v7.widget.RecyclerView
@@ -87,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="52dp"
                 android:text="@string/network_data_consumption_nodata"
-                android:textColor="@color/white"
+                android:textColor="@color/white_10"
                 android:textSize="18sp" />
         </RelativeLayout>
         <!-- 用于进行错误提示 - 结束 -->
